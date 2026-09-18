@@ -1,5 +1,5 @@
 (()=>{
-  const phone='5511967008068';
+  const whatsappUrl='https://tintim.link/whatsapp/c8a5172c-b689-4ab3-9680-0cf2ee69d88f/e5b7caef-2eb5-4d67-a568-783649292031';
   const query=new URLSearchParams(location.search);
   const campaign={
     utm_source:query.get('utm_source')||'',
@@ -46,14 +46,11 @@
         if(!input||!Object.hasOwn(labels,input.service))throw new Error('Serviço inválido.');
         const selected=choices.querySelector(`[data-intent="${input.service}"]`);
         if(!selected)throw new Error('Serviço inválido.');
-        const extras=[input.neighborhood&&`bairro ${input.neighborhood}`,input.areaSquareMeters&&`${input.areaSquareMeters} m²`].filter(Boolean).join(' e ');
-        const message=`Olá, vim pelo Google e quero ${labels[input.service]}.${extras?` O imóvel fica no ${extras}.`:''} Vou enviar fotos para avaliação.`;
-        const whatsappUrl=`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         choices.querySelectorAll('[data-intent]').forEach(link=>link.classList.toggle('is-selected',link===selected));
         selected.href=whatsappUrl;
         selected.focus({preventScroll:true});
         box.scrollIntoView({behavior:'smooth',block:'center'});
-        return {status:'ready',service:input.service,whatsappUrl,nextStep:'Abrir o WhatsApp e anexar fotos ou vídeo do piso.'};
+        return {status:'ready',service:input.service,details:{neighborhood:input.neighborhood||'',areaSquareMeters:input.areaSquareMeters||null},whatsappUrl,nextStep:'Abrir o link rastreável da Tintim para continuar no WhatsApp.'};
       }
     });
 
