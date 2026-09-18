@@ -11,24 +11,10 @@
   };
   window.dataLayer=window.dataLayer||[];
   window.dataLayer.push({event:'landing_page_view',page_type:'google_ads_landing_page',...campaign});
-  const labels={restaurar:'restaurar um piso antigo',raspar:'raspar tacos',calafetar:'corrigir frestas no piso', 'nao-sei':'entender qual tratamento meu piso precisa'};
+  const labels={piso:'restaurar um piso antigo',deck:'restaurar um deck',escada:'restaurar uma escada de madeira',outros:'solicitar outro serviço em madeira'};
   const box=document.querySelector('.intent-box');
   const choices=box?.querySelector('.intent-options');
-  const next=box?.querySelector('.intent-next');
-  const cta=document.querySelector('#smart-cta');
-
-  function choose(intent){
-    const label=labels[intent]||labels['nao-sei'];
-    const message=`Olá, vim pelo Google e quero ${label}. Vou enviar fotos, metragem aproximada e meu bairro.`;
-    cta.href=`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    choices.hidden=true; next.hidden=false;
-    box.querySelector('.step').textContent='2 de 2';
-    next.querySelector('a').focus({preventScroll:true});
-    window.dataLayer.push({event:'lead_intent_selected',service_intent:intent,...campaign});
-  }
-
-  choices?.addEventListener('click',e=>{const button=e.target.closest('[data-intent]');if(button)choose(button.dataset.intent)});
-  box?.querySelector('.reset-intent')?.addEventListener('click',()=>{next.hidden=true;choices.hidden=false;box.querySelector('.step').textContent='1 de 2';choices.querySelector('button').focus()});
+  choices?.addEventListener('click',e=>{const link=e.target.closest('[data-intent]');if(link)window.dataLayer.push({event:'lead_intent_selected',service_intent:link.dataset.intent,...campaign})});
   document.addEventListener('click',e=>{const link=e.target.closest('.track-wa');if(link){window.dataLayer.push({event:'whatsapp_click',link_text:link.textContent.trim(),link_url:link.href,...campaign})}});
 
   // Carrega o GTM depois da primeira interação para não bloquear a experiência inicial.
@@ -58,14 +44,16 @@
       annotations:{readOnlyHint:false,untrustedContentHint:false},
       execute:async input=>{
         if(!input||!Object.hasOwn(labels,input.service))throw new Error('Serviço inválido.');
-        choose(input.service);
+        const selected=choices.querySelector(`[data-intent="${input.service}"]`);
+        if(!selected)throw new Error('Serviço inválido.');
         const extras=[input.neighborhood&&`bairro ${input.neighborhood}`,input.areaSquareMeters&&`${input.areaSquareMeters} m²`].filter(Boolean).join(' e ');
-        if(extras){
-          const message=`Olá, vim pelo Google e quero ${labels[input.service]}. O imóvel fica no ${extras}. Vou enviar fotos do piso.`;
-          cta.href=`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        }
+        const message=`Olá, vim pelo Google e quero ${labels[input.service]}.${extras?` O imóvel fica no ${extras}.`:''} Vou enviar fotos para avaliação.`;
+        const whatsappUrl=`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        choices.querySelectorAll('[data-intent]').forEach(link=>link.classList.toggle('is-selected',link===selected));
+        selected.href=whatsappUrl;
+        selected.focus({preventScroll:true});
         box.scrollIntoView({behavior:'smooth',block:'center'});
-        return {status:'ready',service:input.service,whatsappUrl:cta.href,nextStep:'Abrir o WhatsApp e anexar fotos ou vídeo do piso.'};
+        return {status:'ready',service:input.service,whatsappUrl,nextStep:'Abrir o WhatsApp e anexar fotos ou vídeo do piso.'};
       }
     });
 
