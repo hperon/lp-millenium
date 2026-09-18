@@ -1,0 +1,20 @@
+# Millenium Assoalhos
+
+Landing page oficial para solicitar avaliação de restauração de pisos de madeira em São Paulo e região.
+
+## Serviços
+
+- Restauração de pisos antigos, tacos e assoalhos
+- Restauração de decks de madeira
+- Restauração de escadas de madeira
+- Raspagem, calafetação, polimento e aplicação de proteção
+
+## Contato
+
+- Orçamento: https://tintim.link/whatsapp/c8a5172c-b689-4ab3-9680-0cf2ee69d88f/e5b7caef-2eb5-4d67-a568-783649292031
+- Telefone: +55 11 96700-8068
+- E-mail: contato@milleniumassoalhos.com.br
+
+## Navegação agêntica
+
+A página expõe ferramentas WebMCP para preparar uma avaliação por tipo de serviço e navegar diretamente para seções relevantes.

@@ -6,9 +6,8 @@
 
 /* Projetos realizados — composição compacta */
 .showcase .split{grid-template-columns:1.14fr .86fr;gap:72px}
-.project-gallery{display:grid;grid-template-columns:1.2fr .8fr;grid-template-rows:210px 210px;gap:12px}
+.project-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,210px);gap:12px}
 .project-gallery figure{position:relative;margin:0;overflow:hidden;border-radius:8px;background:#2d2723}
-.project-gallery .project-main{grid-row:1/3}
 .project-gallery img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
 .project-gallery figure:hover img{transform:scale(1.025)}
 .project-gallery figcaption{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(24,20,17,.88);backdrop-filter:blur(6px);padding:9px 11px;border-radius:5px;font-size:.76rem;font-weight:700}
@@ -20,7 +19,7 @@
 .project-stats strong{font:500 2rem Georgia,serif;color:#d8a77d}
 .project-stats span{font-size:.75rem;color:#bdb5af}
 @media(max-width:900px){.showcase .split{grid-template-columns:1fr;gap:48px}.project-gallery{max-width:720px}}
-@media(max-width:620px){.project-gallery{grid-template-columns:1fr 1fr;grid-template-rows:240px 150px}.project-gallery .project-main{grid-column:1/3;grid-row:auto}.project-stats{gap:22px}}
+@media(max-width:620px){.project-gallery{grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,170px)}.project-stats{gap:22px}}
 .final-cta .eyebrow.light{color:#f7e7dc}
 .footer-credit{margin-top:36px;padding-top:22px;border-top:1px solid #29231f;text-align:center;font-size:.78rem;color:#777}
 .footer-credit a{text-decoration:none;transition:color .2s ease}
